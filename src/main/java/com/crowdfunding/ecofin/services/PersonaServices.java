@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MongoServices {
+public class PersonaServices {
 
     @Autowired
-    private IPersonaRepository mongo;
+    private IPersonaRepository personaRepository;
 
     public PersonaDTO insertPersona(PersonaDTO persona){
-        return  mongo.insert(persona);
+        return  personaRepository.insert(persona);
     }
 }
