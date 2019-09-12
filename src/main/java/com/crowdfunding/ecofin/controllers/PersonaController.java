@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +35,16 @@ public class PersonaController {
             response.put("id", persona.getIdString());
         }
         return response;
+    }
+
+
+    @PostMapping("/getPersona")
+    public  PersonaDTO getPersona(HttpServletRequest request){
+        String id = request.getParameter("id");
+        if(id != null && !id.isEmpty()){
+            return personaServices.findById(id);
+        }
+        return  null;
     }
 
 }

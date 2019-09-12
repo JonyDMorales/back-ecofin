@@ -15,4 +15,8 @@ public class PersonaServices {
     public PersonaDTO insertPersona(PersonaDTO persona){
         return  personaRepository.insert(persona);
     }
+
+    public PersonaDTO findById(String id){
+        return personaRepository.findById(id);
+    }
 }
