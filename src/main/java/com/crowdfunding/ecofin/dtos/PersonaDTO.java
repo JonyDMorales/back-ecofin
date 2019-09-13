@@ -5,10 +5,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
+import java.util.List;
 
 @Document("persona")
 public class PersonaDTO {
@@ -24,7 +26,7 @@ public class PersonaDTO {
     private String email;
 
     @NotEmpty(message = "El perfil no es correcto")
-    private String perfil;
+    private List<String> perfil;
 
     @NotEmpty(message = "Ingresa una contraseña")
     private String password;
@@ -35,6 +37,7 @@ public class PersonaDTO {
     @NotEmpty(message = "Indica tu profesión")
     private String profesion;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
 
     @NotEmpty(message = "Ingresa tu sexo")
@@ -77,11 +80,11 @@ public class PersonaDTO {
         this.email = email;
     }
 
-    public String getPerfil() {
+    public List<String> getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(String perfil) {
+    public void setPerfil(List<String> perfil) {
         this.perfil = perfil;
     }
 

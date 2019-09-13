@@ -2,13 +2,11 @@ package com.crowdfunding.ecofin.controllers;
 
 import com.crowdfunding.ecofin.dtos.PersonaDTO;
 import com.crowdfunding.ecofin.services.PersonaServices;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,8 +19,8 @@ public class PersonaController {
     @Autowired
     private PersonaServices personaServices;
 
-    @PostMapping("/savePersona")
-    public Map<String, String> getHome(@Valid PersonaDTO persona, BindingResult status){
+    @PostMapping("/save/persona")
+    public Map<String, String> savePersona(@Valid @RequestBody PersonaDTO persona, BindingResult status){
         Map<String, String> response = new HashMap<>();
         if (status.hasErrors()) {
             status.getAllErrors().forEach(error -> {
@@ -31,14 +29,25 @@ public class PersonaController {
                 response.put(key, value);
             });
         } else {
-            personaServices.insertPersona(persona);
+            personaServices.savePersona(persona);
             response.put("id", persona.getIdString());
         }
         return response;
     }
 
+    @PutMapping("/update/persona")
+    public PersonaDTO updatePersona(@Valid @RequestBody PersonaDTO persona){
+        return personaServices.updatePersona(persona);
+    }
 
-    @PostMapping("/getPersona")
+    @DeleteMapping("/delete/persona")
+    public void deletePersona(@RequestBody ObjectId id){
+        personaServices.deletePersona(id);
+
+    }
+
+
+    @PostMapping("/get/persona")
     public  PersonaDTO getPersona(HttpServletRequest request){
         String id = request.getParameter("id");
         if(id != null && !id.isEmpty()){
