@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface IPersonaRepository extends MongoRepository<PersonaDTO, ObjectId> {
-
     public PersonaDTO findById(String id);
     public void deleteById(String id);
 

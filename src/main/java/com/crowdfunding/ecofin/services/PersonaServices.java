@@ -7,6 +7,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PersonaServices {
 
@@ -20,8 +23,8 @@ public class PersonaServices {
     }
 
     public PersonaDTO updatePersona(PersonaDTO persona){
-        if(!persona.getIdString().isEmpty()){
-            PersonaDTO actual = personaRepository.findById(persona.getIdString());
+        if(!persona.getId().isEmpty()){
+            PersonaDTO actual = personaRepository.findById(persona.getId());
 
             actual.setNombre(persona.getNombre());
             actual.setEmail(persona.getEmail());
@@ -32,15 +35,20 @@ public class PersonaServices {
             actual.setFechaNacimiento(persona.getFechaNacimiento());
             actual.setSexo(persona.getSexo());
             actual.setPais(persona.getPais());
-            actual.setStatus(persona.isStatus());
+            actual.setActivo(persona.getActivo());
+            actual.setProyectos(persona.getProyectos());
 
-            return personaRepository.save(actual);
+            return personaRepository.save(persona);
         }
         return null;
     }
 
-    public void deletePersona(ObjectId id){
+    public void deletePersona(String id){
         personaRepository.deleteById(id);
+    }
+
+    public List<PersonaDTO> consultAllPersonas(){
+        return personaRepository.findAll();
     }
 
 }

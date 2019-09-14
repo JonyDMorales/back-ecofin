@@ -11,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Document("persona")
 public class PersonaDTO {
@@ -37,7 +38,7 @@ public class PersonaDTO {
     @NotEmpty(message = "Indica tu profesión")
     private String profesion;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date fechaNacimiento;
 
     @NotEmpty(message = "Ingresa tu sexo")
@@ -46,7 +47,9 @@ public class PersonaDTO {
     @NotEmpty(message = "Ingresa tu país de origen")
     private String pais;
 
-    private boolean status;
+    private List<Map<String,Object>> proyectos;
+
+    private boolean activo;
 
     @CreatedDate
     private Date createdAt;
@@ -54,7 +57,7 @@ public class PersonaDTO {
     @LastModifiedDate
     private Date updatedAt;
 
-    public String getIdString(){
+    public String getId(){
         return id.toString();
     }
 
@@ -152,11 +155,19 @@ public class PersonaDTO {
         this.updatedAt = updatedAt;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean getActivo() {
+        return activo;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setActivo(boolean status) {
+        this.activo = status;
+    }
+
+    public List<Map<String, Object>> getProyectos() {
+        return proyectos;
+    }
+
+    public void setProyectos(List<Map<String, Object>> proyectos) {
+        this.proyectos = proyectos;
     }
 }

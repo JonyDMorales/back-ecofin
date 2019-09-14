@@ -7,11 +7,11 @@ import com.crowdfunding.ecofin.services.ProyectoServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,8 +20,8 @@ public class ProyectoController {
     @Autowired
     private ProyectoServices proyectoServices;
 
-    @PostMapping("/saveProyecto")
-    public Map<String, String> getHome(@Valid ProyectoDTO proyecto, BindingResult status){
+    @PostMapping("/save/proyecto")
+    public Map<String, String> saveProyecto(@Valid @RequestBody ProyectoDTO proyectoDTO, BindingResult status){
         Map<String, String> response = new HashMap<>();
         if (status.hasErrors()) {
             status.getAllErrors().forEach(error -> {
@@ -30,9 +30,35 @@ public class ProyectoController {
                 response.put(key, value);
             });
         } else {
-            proyectoServices.insertPropyecto(proyecto);
-            response.put("id", proyecto.getIdString());
+            if(proyectoServices.insertPropyecto(proyectoDTO) != null) {
+                response.put("id", proyectoDTO.getId());
+            }
         }
         return response;
+    }
+
+    @PutMapping("/update/proyecto")
+    public ProyectoDTO updateProyecto(@Valid @RequestBody ProyectoDTO proyectoDTO){
+        return proyectoServices.updateProyecto(proyectoDTO);
+    }
+
+    @DeleteMapping("/delete/proyecto")
+    public void deleteProyecto(@RequestBody ProyectoDTO proyectoDTO){
+        if(proyectoDTO != null){
+            proyectoServices.deleteProyecto(proyectoDTO.getId());
+        }
+    }
+
+    @PostMapping("/get/proyecto")
+    public  ProyectoDTO getProyecto(@RequestBody ProyectoDTO proyectoDTO){
+        if(proyectoDTO != null){
+            return proyectoServices.findById(proyectoDTO.getId());
+        }
+        return null;
+    }
+
+    @PostMapping("/get/all/proyecto")
+    public List<ProyectoDTO> getAllProyecto(){
+        return proyectoServices.consultAllProyects();
     }
 }

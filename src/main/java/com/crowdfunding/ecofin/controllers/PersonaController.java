@@ -8,10 +8,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class PersonaController {
@@ -30,7 +31,7 @@ public class PersonaController {
             });
         } else {
             personaServices.savePersona(persona);
-            response.put("id", persona.getIdString());
+            response.put("id", persona.getId());
         }
         return response;
     }
@@ -41,19 +42,23 @@ public class PersonaController {
     }
 
     @DeleteMapping("/delete/persona")
-    public void deletePersona(@RequestBody ObjectId id){
-        personaServices.deletePersona(id);
+    public void deletePersona(@RequestBody PersonaDTO personaDTO){
+        if(personaDTO != null) {
+            personaServices.deletePersona(personaDTO.getId());
+        }
 
     }
 
-
     @PostMapping("/get/persona")
-    public  PersonaDTO getPersona(HttpServletRequest request){
-        String id = request.getParameter("id");
-        if(id != null && !id.isEmpty()){
-            return personaServices.findById(id);
+    public PersonaDTO getPersona(@RequestBody PersonaDTO personaDTO){
+        if(personaDTO != null){
+            return personaServices.findById(personaDTO.getId());
         }
         return  null;
     }
 
+    @PostMapping("/get/all/persona")
+    public List<PersonaDTO> getAllPersona(){
+        return personaServices.consultAllPersonas();
+    }
 }

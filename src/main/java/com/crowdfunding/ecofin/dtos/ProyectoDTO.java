@@ -5,9 +5,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Document("proyecto")
 public class ProyectoDTO {
@@ -15,19 +17,24 @@ public class ProyectoDTO {
     @Id
     private ObjectId id;
     private String nombre;
-    private String propietarioId;
+    private Map<String, String> propietario;
     private String descripcion;
     private String categoria;
     private Integer valorProyecto;
     private Integer montoAcumulado;
     private Integer porcentaje;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date startDate;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date finishDate;
+
     private Integer diasFaltantes;
     private String pais;
     private Integer visitas;
-    private List<String> contribuyentesId;
-    private boolean status;
+    private List<Map<String, Object>> contribuyentes;
+    private boolean activo;
 
     @CreatedDate
     private Date createdAt;
@@ -35,12 +42,9 @@ public class ProyectoDTO {
     @LastModifiedDate
     private Date updatedAt;
 
-    public String getIdString(){
-        return id.toString();
-    }
 
-    public ObjectId getId() {
-        return id;
+    public String getId(){
+        return id.toString();
     }
 
     public void setId(ObjectId id) {
@@ -55,12 +59,12 @@ public class ProyectoDTO {
         this.nombre = nombre;
     }
 
-    public String getPropietarioId() {
-        return propietarioId;
+    public Map<String, String> getPropietario() {
+        return propietario;
     }
 
-    public void setPropietarioId(String propietarioId) {
-        this.propietarioId = propietarioId;
+    public void setPropietario(Map<String, String> propietario) {
+        this.propietario = propietario;
     }
 
     public String getDescripcion() {
@@ -143,20 +147,20 @@ public class ProyectoDTO {
         this.visitas = visitas;
     }
 
-    public List<String> getContribuyentesId() {
-        return contribuyentesId;
+    public List<Map<String, Object>> getContribuyentes() {
+        return contribuyentes;
     }
 
-    public void setContribuyentesId(List<String> contribuyentesId) {
-        this.contribuyentesId = contribuyentesId;
+    public void setContribuyentes(List<Map<String, Object>> contribuyentes) {
+        this.contribuyentes = contribuyentes;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean getActivo() {
+        return activo;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setActivo(boolean status) {
+        this.activo = status;
     }
 
     public Date getCreatedAt() {
@@ -174,4 +178,5 @@ public class ProyectoDTO {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }
