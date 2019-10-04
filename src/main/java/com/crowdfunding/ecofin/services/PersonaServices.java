@@ -22,6 +22,10 @@ public class PersonaServices {
         return personaRepository.findById(id);
     }
 
+    public PersonaDTO login(String email, String password){
+        return personaRepository.findByEmailAndPassword(email, password);
+    }
+
     public PersonaDTO updatePersona(PersonaDTO persona){
         if(!persona.getId().isEmpty()){
             PersonaDTO actual = personaRepository.findById(persona.getId());

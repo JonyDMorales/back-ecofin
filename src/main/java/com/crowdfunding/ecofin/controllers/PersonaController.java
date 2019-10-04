@@ -62,4 +62,12 @@ public class PersonaController {
     public List<PersonaDTO> getAllPersona(){
         return personaServices.consultAllPersonas();
     }
+
+    @PostMapping("/login")
+    public PersonaDTO login(@RequestBody PersonaDTO personaDTO){
+        if(personaDTO != null){
+            return personaServices.login(personaDTO.getEmail(), personaDTO.getPassword());
+        }
+        return  null;
+    }
 }
