@@ -7,7 +7,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,8 +24,15 @@ public class PersonaServices {
         return personaRepository.findById(id);
     }
 
-    public PersonaDTO login(String email, String password){
-        return personaRepository.findByEmailAndPassword(email, password);
+    public Map<String, Object>  login(String email, String password){
+        PersonaDTO persona = personaRepository.findByEmailAndPassword(email, password);
+        Map<String, Object> res = new HashMap<>();
+        if(persona != null){
+            res.put("token", persona.getId());
+            res.put("nombre", persona.getNombre());
+            res.put("email",persona.getEmail());
+        }
+        return res;
     }
 
     public PersonaDTO updatePersona(PersonaDTO persona){

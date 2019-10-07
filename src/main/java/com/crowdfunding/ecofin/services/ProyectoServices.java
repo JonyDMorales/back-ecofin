@@ -65,4 +65,8 @@ public class ProyectoServices {
         proyectoRepository.deleteById(id);
     }
 
+    public List<ProyectoDTO> getProyects(String id){
+        return proyectoRepository.findByPropietario(id);
+    }
+
 }

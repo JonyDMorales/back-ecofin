@@ -64,10 +64,10 @@ public class PersonaController {
     }
 
     @PostMapping("/login")
-    public PersonaDTO login(@RequestBody PersonaDTO personaDTO){
+    public Map<String, Object> login(@RequestBody PersonaDTO personaDTO){
         if(personaDTO != null){
             return personaServices.login(personaDTO.getEmail(), personaDTO.getPassword());
         }
-        return  null;
+        return  new HashMap<>();
     }
 }
