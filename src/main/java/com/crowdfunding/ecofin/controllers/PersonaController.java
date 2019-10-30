@@ -2,17 +2,17 @@ package com.crowdfunding.ecofin.controllers;
 
 import com.crowdfunding.ecofin.dtos.PersonaDTO;
 import com.crowdfunding.ecofin.services.PersonaServices;
-import org.bson.types.ObjectId;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -65,9 +65,32 @@ public class PersonaController {
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody PersonaDTO personaDTO){
+        Map<String, Object> res = new HashMap<>(2);
+        res.put("TOKEN", getJWTToken("jonatan"));
         if(personaDTO != null){
-            return personaServices.login(personaDTO.getEmail(), personaDTO.getPassword());
+            //return personaServices.login(personaDTO.getEmail(), personaDTO.getPassword());
         }
-        return  new HashMap<>();
+        return  res;
     }
+
+    private String getJWTToken(String username) {
+        String secretKey = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
+        List grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+
+        String token = Jwts
+                .builder()
+                .setId("softtekJWT")
+                .setSubject(username)
+                .claim("authorities",
+                        grantedAuthorities.stream()
+                                .collect(Collectors.toList()))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .signWith(SignatureAlgorithm.HS512,
+                        secretKey.getBytes()).compact();
+
+        return token;
+    }
+
+
 }
