@@ -32,6 +32,7 @@ public class EcofinApplication {
             http.csrf().disable()
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
+                    .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                     .antMatchers(HttpMethod.POST, "/login").permitAll()
                     .anyRequest().authenticated();
         }
