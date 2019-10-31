@@ -34,22 +34,22 @@ public class PersonaController {
     }
 
     @PutMapping("/update/persona")
-    public PersonaDTO updatePersona(@Valid @RequestBody PersonaDTO persona){
+    public PersonaDTO updatePersona(@RequestBody PersonaDTO persona){
         return personaServices.updatePersona(persona);
     }
 
     @DeleteMapping("/delete/persona")
-    public void deletePersona(@RequestBody PersonaDTO personaDTO){
-        if(personaDTO != null) {
-            personaServices.deletePersona(personaDTO.getId());
+    public void deletePersona(@RequestBody Map<String,String> id){
+        if(id != null && id.get("id") != null) {
+            personaServices.deletePersona(id.get("id"));
         }
 
     }
 
     @PostMapping("/get/persona")
-    public PersonaDTO getPersona(@RequestBody PersonaDTO personaDTO){
-        if(personaDTO != null){
-            return personaServices.findById(personaDTO.getId());
+    public PersonaDTO getPersona(@RequestBody Map<String,String> id){
+        if(id != null && id.get("id") != null){
+            return personaServices.findById(id.get("id"));
         }
         return  null;
     }

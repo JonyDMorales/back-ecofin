@@ -11,7 +11,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Document("persona")
 public class PersonaDTO {
@@ -47,7 +46,7 @@ public class PersonaDTO {
     @NotEmpty(message = "Ingresa tu país de origen")
     private String pais;
 
-    private List<Map<String,Object>> proyectos;
+    private List<String> proyectos;
 
     private boolean activo;
 
@@ -163,11 +162,11 @@ public class PersonaDTO {
         this.activo = status;
     }
 
-    public List<Map<String, Object>> getProyectos() {
+    public List<String> getProyectos() {
         return proyectos;
     }
 
-    public void setProyectos(List<Map<String, Object>> proyectos) {
+    public void setProyectos(List<String> proyectos) {
         this.proyectos = proyectos;
     }
 }

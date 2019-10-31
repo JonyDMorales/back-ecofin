@@ -1,6 +1,8 @@
 package com.crowdfunding.ecofin.configures;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.FilterChain;
@@ -8,11 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,7 +26,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 public class JWTAuthorizationFilter extends OncePerRequestFilter{
 
     private final String HEADER = "Authorization";
-
     private String secretKey = "Stratos/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
 
     @Override
@@ -33,7 +33,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
         try {
             if (existeJWTToken(request)) {
                 Claims claims = validateToken(request);
-                if (claims.get("authorities") != null) {
+                if (claims != null && claims.get("authorities") != null) {
                     setUpSpringAuthentication(claims);
                 } else {
                     SecurityContextHolder.clearContext();
@@ -49,18 +49,25 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
 
     private Claims validateToken(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER);
-        return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwtToken).getBody();
+        Claims claims = null;
+        try{
+            claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwtToken).getBody();
+        }catch(Exception e ){
+            return claims;
+        }
+        return claims;
     }
 
     private void setUpSpringAuthentication(Claims claims) {
         @SuppressWarnings("unchecked")
-        List<GrantedAuthority> authorities = (List<GrantedAuthority>) claims.get("authorities");
-        System.out.println(claims);
-        System.out.println(authorities);
-        //List<GrantedAuthority> grantedAuths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
-        //GrantedAuthority grantedAuthority = grantedAuths.get(0);
-        //System.out.println(grantedAuthority.getAuthority());
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities);
+        List authorities = (List) claims.get("authorities");
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for(Object role : authorities){
+            LinkedHashMap<String,String> rol = (LinkedHashMap<String,String>) role;
+            grantedAuthorities.add(new SimpleGrantedAuthority(rol.get("authority")));
+        }
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null, grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 

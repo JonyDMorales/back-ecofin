@@ -22,7 +22,6 @@ public class EcofinApplication {
         SpringApplication.run(EcofinApplication.class, args);
     }
 
-
     @EnableWebSecurity
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,6 +33,7 @@ public class EcofinApplication {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                     .antMatchers(HttpMethod.POST, "/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/save/persona").permitAll()
                     .anyRequest().authenticated();
         }
     }

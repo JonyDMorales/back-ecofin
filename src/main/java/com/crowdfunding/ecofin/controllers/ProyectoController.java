@@ -58,11 +58,6 @@ public class ProyectoController {
         return null;
     }
 
-    @PostMapping("/get/all/proyecto")
-    public List<ProyectoDTO> getAllProyecto(){
-        return proyectoServices.consultAllProyects();
-    }
-
     @PostMapping("/get/proyectos")
     public List<ProyectoDTO> getProyects(@RequestBody PersonaDTO personaDTO){
         if(personaDTO != null){
