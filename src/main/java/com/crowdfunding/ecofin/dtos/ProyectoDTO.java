@@ -17,6 +17,7 @@ public class ProyectoDTO {
     @Id
     private ObjectId id;
     private String nombre;
+    private String foto;
     private Map<String, String> propietario;
     private String descripcion;
     private String categoria;
@@ -33,8 +34,9 @@ public class ProyectoDTO {
     private Integer diasFaltantes;
     private String pais;
     private Integer visitas;
+    private Integer prioridad;
     private List<Map<String, Object>> contribuyentes;
-    private boolean activo;
+    private Integer activo;
 
     @CreatedDate
     private Date createdAt;
@@ -155,11 +157,11 @@ public class ProyectoDTO {
         this.contribuyentes = contribuyentes;
     }
 
-    public boolean getActivo() {
+    public Integer getActivo() {
         return activo;
     }
 
-    public void setActivo(boolean status) {
+    public void setActivo(Integer status) {
         this.activo = status;
     }
 
@@ -179,4 +181,11 @@ public class ProyectoDTO {
         this.updatedAt = updatedAt;
     }
 
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
+
+    public Integer getPrioridad() { return prioridad; }
+
+    public void setPrioridad(Integer prioridad) { this.prioridad = prioridad; }
 }

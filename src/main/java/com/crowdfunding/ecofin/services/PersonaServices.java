@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonaServices {
@@ -108,6 +106,14 @@ public class PersonaServices {
 
             if(persona.getPais() != null){
                 actual.setPais(persona.getPais());
+            }
+
+            if(persona.getActivo() != null){
+                actual.setActivo(persona.getActivo());
+            }
+
+            if(persona.getFoto() != null){
+                actual.setFoto(persona.getFoto());
             }
 
             if(persona.getProyectos() != null){

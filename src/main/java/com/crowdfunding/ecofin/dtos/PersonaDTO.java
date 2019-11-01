@@ -25,6 +25,8 @@ public class PersonaDTO {
     @Email(message = "el formato del correo no es valido")
     private String email;
 
+    private String foto;
+
     @NotEmpty(message = "El perfil no es correcto")
     private List<String> perfil;
 
@@ -48,7 +50,7 @@ public class PersonaDTO {
 
     private List<String> proyectos;
 
-    private boolean activo;
+    private Integer activo;
 
     @CreatedDate
     private Date createdAt;
@@ -154,11 +156,11 @@ public class PersonaDTO {
         this.updatedAt = updatedAt;
     }
 
-    public boolean getActivo() {
+    public Integer getActivo() {
         return activo;
     }
 
-    public void setActivo(boolean status) {
+    public void setActivo(Integer status) {
         this.activo = status;
     }
 
@@ -169,4 +171,9 @@ public class PersonaDTO {
     public void setProyectos(List<String> proyectos) {
         this.proyectos = proyectos;
     }
+
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
+
 }
