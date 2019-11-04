@@ -2,6 +2,7 @@ package com.crowdfunding.ecofin.controllers;
 
 import com.crowdfunding.ecofin.dtos.PersonaDTO;
 import com.crowdfunding.ecofin.services.PersonaServices;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,10 +39,11 @@ public class PersonaController {
         return personaServices.updatePersona(persona);
     }
 
-    @DeleteMapping("/delete/persona")
-    public void deletePersona(@RequestBody Map<String,String> id){
-        if(id != null && id.get("id") != null) {
-            personaServices.deletePersona(id.get("id"));
+    @DeleteMapping("/delete/logico/persona")
+    public void deleteLogicoPersona(@RequestBody PersonaDTO personaDTO){
+        if(personaDTO != null && personaDTO.getId() != null) {
+            personaDTO.setActivo(0);
+            personaServices.updatePersona(personaDTO);
         }
 
     }

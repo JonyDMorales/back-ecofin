@@ -43,10 +43,11 @@ public class ProyectoController {
         return proyectoServices.updateProyecto(proyectoDTO);
     }
 
-    @DeleteMapping("/delete/proyecto")
+    @DeleteMapping("/delete/logico/proyecto")
     public void deleteProyecto(@RequestBody ProyectoDTO proyectoDTO){
-        if(proyectoDTO != null){
-            proyectoServices.deleteProyecto(proyectoDTO.getId());
+        if(proyectoDTO != null && proyectoDTO.getId() != null){
+            proyectoDTO.setActivo(0);
+            proyectoServices.updateProyecto(proyectoDTO);
         }
     }
 

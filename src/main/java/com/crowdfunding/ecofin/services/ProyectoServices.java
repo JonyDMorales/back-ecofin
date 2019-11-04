@@ -7,6 +7,7 @@ import com.crowdfunding.ecofin.repositories.IProyectoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class ProyectoServices {
     private IProyectoRepository proyectoRepository;
 
     @Autowired
-    private IPersonaRepository personaRepository;
+    private PersonaServices personaServices;
 
     public ProyectoDTO insertPropyecto(ProyectoDTO proyectoDTO){
 
@@ -25,10 +26,18 @@ public class ProyectoServices {
 
         String id = propietario.get("id");
 
-        PersonaDTO propietarioDTO = personaRepository.findById(id);
+        PersonaDTO propietarioDTO = personaServices.findById(id);
 
         if(propietarioDTO != null){
-            return proyectoRepository.insert(proyectoDTO);
+            ProyectoDTO proyectoDTNuevo = proyectoRepository.insert(proyectoDTO);
+            List<String> proyectos = propietarioDTO.getProyectos();
+            if(proyectos == null){
+                proyectos = new ArrayList<>(1);
+            }
+            proyectos.add(proyectoDTNuevo.getId());
+            propietarioDTO.setProyectos(proyectos);
+            personaServices.updatePersona(propietarioDTO);
+            return proyectoDTNuevo;
         }
 
         return null;
@@ -45,20 +54,69 @@ public class ProyectoServices {
     public ProyectoDTO updateProyecto(ProyectoDTO nuevo){
         ProyectoDTO actual = proyectoRepository.findById(nuevo.getId());
         if(actual != null) {
-            actual.setNombre(nuevo.getNombre());
-            actual.setPropietario(nuevo.getPropietario());
-            actual.setDescripcion(nuevo.getDescripcion());
-            actual.setCategoria(nuevo.getCategoria());
-            actual.setValorProyecto(nuevo.getValorProyecto());
-            actual.setMontoAcumulado(nuevo.getMontoAcumulado());
-            actual.setPorcentaje(nuevo.getPorcentaje());
-            actual.setFinishDate(nuevo.getFinishDate());
-            actual.setDiasFaltantes(nuevo.getDiasFaltantes());
-            actual.setPais(nuevo.getPais());
-            actual.setVisitas(nuevo.getVisitas());
-            actual.setContribuyentes(nuevo.getContribuyentes());
+
+            if(nuevo.getNombre() != null){
+                actual.setNombre(nuevo.getNombre());
+            }
+
+            if(nuevo.getFoto() != null){
+                actual.setFoto(nuevo.getFoto());
+            }
+
+            if(nuevo.getPropietario() != null){
+                actual.setPropietario(nuevo.getPropietario());
+            }
+
+            if(nuevo.getDescripcion()!= null){
+                actual.setDescripcion(nuevo.getDescripcion());
+            }
+
+            if(nuevo.getCategoria()!= null){
+                actual.setCategoria(nuevo.getCategoria());
+            }
+
+            if(nuevo.getValorProyecto()!= null){
+                actual.setValorProyecto(nuevo.getValorProyecto());
+            }
+
+            if(nuevo.getMontoAcumulado()!= null){
+                actual.setMontoAcumulado(nuevo.getMontoAcumulado());
+            }
+
+            if(nuevo.getPorcentaje()!= null){
+                actual.setPorcentaje(nuevo.getPorcentaje());
+            }
+
+            if(nuevo.getFinishDate()!= null){
+                actual.setFinishDate(nuevo.getFinishDate());
+            }
+
+            if(nuevo.getDiasFaltantes()!= null){
+                actual.setDiasFaltantes(nuevo.getDiasFaltantes());
+            }
+
+            if(nuevo.getPais()!= null){
+                actual.setPais(nuevo.getPais());
+            }
+
+            if(nuevo.getVisitas()!= null){
+                actual.setVisitas(nuevo.getVisitas());
+            }
+
+            if(nuevo.getPrioridad()!= null){
+                actual.setPrioridad(nuevo.getPrioridad());
+            }
+
+            if(nuevo.getContribuyentes()!= null) {
+                actual.setContribuyentes(nuevo.getContribuyentes());
+            }
+
+            if(nuevo.getActivo()!= null) {
+                actual.setActivo(nuevo.getActivo());
+            }
+            return proyectoRepository.save(actual);
         }
-        return proyectoRepository.save(actual);
+        return null;
     }
 
     public void deleteProyecto(String id){
