@@ -58,7 +58,8 @@ public class PersonaController {
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody PersonaDTO personaDTO) {
-        Map<String, Object> res = new HashMap<>(2);
+        Map<String, Object> res = new HashMap<>(1);
+
         if (personaDTO != null) {
             return personaServices.login(personaDTO.getEmail(), personaDTO.getPassword());
         }

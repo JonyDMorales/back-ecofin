@@ -3,6 +3,7 @@ package com.crowdfunding.ecofin.services;
 
 import com.crowdfunding.ecofin.dtos.PersonaDTO;
 import com.crowdfunding.ecofin.repositories.IPersonaRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -23,8 +24,11 @@ public class PersonaServices {
 
     @Value("${jwt.secret}")
     private  String secretKey;
+
     //5 * 60 * 1000 (5 minutos)
     private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60 * 1000;
+
+    private String passwordKey = "EcoPassword00000000000000000000000000000000000000000000000000000";
 
     private String getJWTToken(String id, String username, List<String> roles) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -42,6 +46,12 @@ public class PersonaServices {
         return token;
     }
 
+    private String decryptPassword(String cifrado){
+        Claims claims = Jwts.parser().setSigningKey(passwordKey.getBytes()).parseClaimsJws(cifrado).getBody();
+        String pass = (String) claims.get("password");
+        return pass;
+    }
+
     public PersonaDTO savePersona(PersonaDTO persona){ return  personaRepository.insert(persona); }
 
     public PersonaDTO findById(String id){
@@ -56,14 +66,18 @@ public class PersonaServices {
             return null;
         }
 
-        PersonaDTO persona = personaRepository.findByEmailAndPassword(email, password);
+        PersonaDTO persona = personaRepository.findByEmail(email);
         Map<String, Object> res = null;
         if(persona != null){
-            res = new HashMap<>();
-            res.put("TOKEN", getJWTToken(persona.getId(), persona.getNombre(), persona.getPerfil()));
-            res.put("TOKEN_ID", persona.getId());
-            res.put("NOMBRE", persona.getNombre());
-            res.put("EMAIL",persona.getEmail());
+            String passwordRequest = decryptPassword(password);
+            String passwordBD = decryptPassword(persona.getPassword());
+            if (passwordRequest.equals(passwordBD)) {
+                res = new HashMap<>();
+                res.put("TOKEN", getJWTToken(persona.getId(), persona.getNombre(), persona.getPerfil()));
+                res.put("TOKEN_ID", persona.getId());
+                res.put("NOMBRE", persona.getNombre());
+                res.put("EMAIL",persona.getEmail());
+            }
         }
         return res;
     }

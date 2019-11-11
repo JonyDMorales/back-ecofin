@@ -176,4 +176,24 @@ public class PersonaDTO {
 
     public void setFoto(String foto) { this.foto = foto; }
 
+    @Override
+    public String toString() {
+        return "PersonaDTO{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", foto='" + foto + '\'' +
+                ", perfil=" + perfil +
+                ", password='" + password + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", profesion='" + profesion + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", sexo='" + sexo + '\'' +
+                ", pais='" + pais + '\'' +
+                ", proyectos=" + proyectos +
+                ", activo=" + activo +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

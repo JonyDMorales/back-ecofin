@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface IPersonaRepository extends MongoRepository<PersonaDTO, ObjectId> {
     public PersonaDTO findById(String id);
     public void deleteById(String id);
-    public PersonaDTO findByEmailAndPassword(String email, String password);
+    public PersonaDTO findByEmail(String email);
 
 }
