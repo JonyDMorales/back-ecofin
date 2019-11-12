@@ -21,15 +21,12 @@ public class ProyectoServices {
     private PersonaServices personaServices;
 
     public ProyectoDTO insertPropyecto(ProyectoDTO proyectoDTO){
-
         Map<String,String> propietario =  proyectoDTO.getPropietario();
-
         String id = propietario.get("id");
-
         PersonaDTO propietarioDTO = personaServices.findById(id);
-
         if(propietarioDTO != null){
             ProyectoDTO proyectoDTNuevo = proyectoRepository.insert(proyectoDTO);
+            System.out.println(proyectoDTNuevo);
             List<String> proyectos = propietarioDTO.getProyectos();
             if(proyectos == null){
                 proyectos = new ArrayList<>(1);
@@ -44,6 +41,10 @@ public class ProyectoServices {
     }
 
     public List<ProyectoDTO> consultAllProyects(){
+        return proyectoRepository.findAllByOrderByPrioridadDesc();
+    }
+
+    public List<ProyectoDTO> adminConsultAllProyects(){
         return proyectoRepository.findAll();
     }
 

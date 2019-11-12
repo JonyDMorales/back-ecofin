@@ -11,6 +11,10 @@ public interface IProyectoRepository extends MongoRepository<ProyectoDTO, Object
 
     public ProyectoDTO findById(String id);
     public  void deleteById(String id);
+    @Query("{'activo': 0}")
+    public  List<ProyectoDTO> findAll();
+    @Query("{'activo': 1}")
+    public  List<ProyectoDTO> findAllByOrderByPrioridadDesc();
     @Query("{'propietario.id': ?0}")
     public List<ProyectoDTO> findByPropietario(String id);
 }

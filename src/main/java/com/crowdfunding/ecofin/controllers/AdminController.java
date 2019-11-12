@@ -24,9 +24,6 @@ public class AdminController {
         return personaServices.consultAllPersonas();
     }
 
-    @PostMapping("/admin/get/all/proyecto")
-    public List<ProyectoDTO> getAllProyecto(){ return proyectoServices.consultAllProyects(); }
-
     @DeleteMapping("/admin/delete/fisico/persona")
     public void deletePersona(@RequestBody Map<String,String> id){
         if(id != null && id.get("id") != null) {
@@ -41,4 +38,7 @@ public class AdminController {
             proyectoServices.deleteProyecto(proyectoDTO.getId());
         }
     }
+
+    @PostMapping("/admin/get/all/proyectos")
+    public List<ProyectoDTO> getAllProyecto(){ return proyectoServices.adminConsultAllProyects(); }
 }

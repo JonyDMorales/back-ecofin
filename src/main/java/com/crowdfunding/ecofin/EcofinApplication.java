@@ -35,6 +35,7 @@ public class EcofinApplication {
                     .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                     .antMatchers(HttpMethod.POST, "/login").permitAll()
                     .antMatchers(HttpMethod.POST, "/save/persona").permitAll()
+                    .antMatchers(HttpMethod.POST, "/get/all/proyectos").permitAll()
                     .anyRequest().authenticated();
         }
     }
