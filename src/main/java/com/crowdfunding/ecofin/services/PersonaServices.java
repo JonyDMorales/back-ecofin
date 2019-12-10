@@ -77,6 +77,13 @@ public class PersonaServices {
                 res.put("TOKEN_ID", persona.getId());
                 res.put("NOMBRE", persona.getNombre());
                 res.put("EMAIL",persona.getEmail());
+
+                List<String> perfiles = persona.getPerfil();
+                if(perfiles.contains("ROLE_ADMIN")){
+                    res.put("ADMIN", 1);
+                } else {
+                    res.put("ADMIN", 0);
+                }
             }
         }
         return res;
